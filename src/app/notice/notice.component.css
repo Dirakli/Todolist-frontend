@@ -1,0 +1,24 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  height: 150px;
+  background-color: #fafafa;
+  margin-top: 50px;
+  padding: 40px 0;
+}
+
+.notice {
+  font-weight: 600;
+  font-size: 22px;
+  line-height: 26.4px;
+  color: #ffadad;
+}
+
+.notice-text {
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 21.6px;
+  color: #383e59;
+}

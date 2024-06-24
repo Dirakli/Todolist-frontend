@@ -1,0 +1,15 @@
+.add-task {
+  font-size: 18px;
+  line-height: 21.6px;
+  color: #383e59;
+  font-weight: 600;
+  margin-left: 10px;
+}
+
+.wrapper {
+  display: flex;
+  align-items: start;
+  justify-content: center;
+  text-align: center;
+  margin-top: 80px;
+}

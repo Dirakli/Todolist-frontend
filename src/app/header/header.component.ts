@@ -8,7 +8,6 @@ import { NoticeComponent } from '../notice/notice.component';
     <div class="header">
       <h1 class="title">T o - d o List</h1>
     </div>
-    <app-notice></app-notice>
   `,
   styleUrl: './header.component.css',
 })

@@ -1,22 +1,54 @@
 import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { IconComponent } from '../helpers/icon/icon.component';
+
 @Component({
   selector: 'app-add',
   standalone: true,
-  imports: [IconComponent],
+  imports: [CommonModule, IconComponent],
   template: `
-    <form>
+    <div class="wrapper">
       <div class="input-wrapper">
-        <label for="ასიდასიდაიდს">შეიყვანეთ დასახელება</label>
-        <input class="input" type="text" />
+        <label for="input">შეიყვანეთ დასახელება</label>
+        <input class="input" id="input" type="text" />
       </div>
-      <div class="dropdown">
-        <span>აირჩიეთ დამატების სტატუსი</span>
+      <div class="dropdown" (click)="toggleDropdown()">
+        <span class="choose-status">აირჩიეთ დამატების სტატუსი</span>
         <app-icon class="icon" [imagePath]="'/arrow-down.svg'"></app-icon>
+        <div *ngIf="dropdownOpen" class="dropdown-menu">
+          <div
+            class="dropdown-item"
+            (click)="selectStatus('მიმდინარე სტატუსი')"
+          >
+            მიმდინარე სტატუსი
+          </div>
+          <div
+            class="dropdown-item"
+            (click)="selectStatus('დასრულებული სტატუსი')"
+          >
+            დასრულებული სტატუსი
+          </div>
+        </div>
       </div>
-      <button>დამატება</button>
-    </form>
+
+      <button class="btn">
+        <app-icon class="btn-icon" [imagePath]="'/plusIcon.svg'"></app-icon>
+        <span class="btn-text">დამატება</span>
+      </button>
+    </div>
   `,
-  styleUrl: './add.component.css',
+  styleUrls: ['./add.component.css'],
 })
-export class AddComponent {}
+export class AddComponent {
+  dropdownOpen = false;
+  selectedStatus: string | null = null;
+
+  toggleDropdown() {
+    this.dropdownOpen = !this.dropdownOpen;
+  }
+
+  selectStatus(status: string) {
+    this.selectedStatus = status;
+    this.dropdownOpen = false;
+  }
+}

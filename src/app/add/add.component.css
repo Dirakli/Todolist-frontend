@@ -29,6 +29,16 @@ label {
   line-height: 19.2px;
 }
 
+.status-orange {
+  color: #ffdf8c;
+  font-weight: 600;
+}
+
+.status-sky {
+  color: #8ff4db;
+  font-weight: 600;
+}
+
 .input-wrapper {
   display: flex;
   width: 100%;
@@ -54,7 +64,7 @@ label {
 }
 
 .dropdown {
-  position: relative; /* Added */
+  position: relative;
   max-width: 350px;
   height: 40px;
   width: 100%;
@@ -96,24 +106,43 @@ label {
   margin-left: 10px;
 }
 
-/* Dropdown menu styles */
 .dropdown-menu {
   position: absolute;
-  top: 100%; /* Adjusted to position it directly below the dropdown */
+  top: 100%;
   left: 0;
   background: white;
   border: 1px solid #ccc;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   z-index: 1000;
   width: 100%;
+  margin-top: 10px;
+  padding: 20px 30px;
   max-width: 350px;
   border-radius: 20px;
+  border: none;
   overflow: hidden;
 }
 
-.dropdown-item {
-  padding: 16px 35px;
+.dropdown-item-orange,
+.dropdown-item-sky {
   cursor: pointer;
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 21.6px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 40px;
+  margin-left: 10px;
+}
+
+.dropdown-item-orange {
+  color: #ffdf8c;
+}
+
+.dropdown-item-sky {
+  color: #8ff4db;
+  margin-top: 10px;
 }
 
 .dropdown-item:hover {

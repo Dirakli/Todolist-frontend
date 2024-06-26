@@ -36,6 +36,7 @@ import { IconComponent } from '../helpers/icon/icon.component';
               *ngIf="selectedIcon === 'iconOrange'"
               [imagePath]="'/iconOrange.svg'"
             ></app-icon>
+            <span>Hello World!</span>
           </div>
           <div
             class="dropdown-item-sky"

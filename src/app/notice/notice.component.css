@@ -22,3 +22,9 @@
   line-height: 21.6px;
   color: #383e59;
 }
+
+@media (max-width: 500px) {
+  .notice-text {
+    text-align: center;
+  }
+}

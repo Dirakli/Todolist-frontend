@@ -33,7 +33,7 @@ import { IconComponent } from '../helpers/icon/icon.component';
           >
             <span>მიმდინარე სტატუსი</span>
             <app-icon
-              *ngIf="selectedIcon === 'iconOrange'"
+              *ngIf="selectedIcon === 'icon-orange'"
               [imagePath]="'/iconOrange.svg'"
             ></app-icon>
           </div>
@@ -43,7 +43,7 @@ import { IconComponent } from '../helpers/icon/icon.component';
           >
             <span>დასრულებული სტატუსი</span>
             <app-icon
-              *ngIf="selectedIcon === 'iconSky'"
+              *ngIf="selectedIcon === 'icon-sky'"
               [imagePath]="'/iconSky.svg'"
             ></app-icon>
           </div>
@@ -51,7 +51,7 @@ import { IconComponent } from '../helpers/icon/icon.component';
       </div>
 
       <button class="btn">
-        <app-icon class="btn-icon" [imagePath]="'/plusIcon.svg'"></app-icon>
+        <app-icon class="btn-icon" [imagePath]="'/plus-icon.svg'"></app-icon>
         <span class="btn-text">დამატება</span>
       </button>
     </div>

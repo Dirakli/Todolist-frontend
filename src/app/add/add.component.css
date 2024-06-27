@@ -98,6 +98,10 @@ label {
   border: none;
 }
 
+.btn:hover {
+  cursor: pointer;
+}
+
 .btn-text {
   color: #ffffff;
   font-weight: 400;

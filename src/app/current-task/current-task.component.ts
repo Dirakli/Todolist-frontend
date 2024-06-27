@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
 import { IconComponent } from '../helpers/icon/icon.component';
+import { NgFor } from '@angular/common';
 @Component({
   selector: 'app-current-task',
   standalone: true,
-  imports: [IconComponent],
+  imports: [IconComponent, NgFor],
   template: `
     <div class="container">
       <div class="wrapper">
@@ -12,28 +13,36 @@ import { IconComponent } from '../helpers/icon/icon.component';
       </div>
       <span class="status">სტატუსი</span>
     </div>
-    <div class="current-wrapper">
-      <p class="current-text">შექმენით კომპონენტი თასქების სიის გამოსატანად.</p>
-      <span class="current">მიმდინარე</span>
+    <div *ngFor="let task of tasks" class="current-wrapper">
+      <p class="current-text">{{ task.text }}</p>
+      <span class="current">{{ task.status }}</span>
       <div class="delete-edit-wrapper">
         <div class="edit-wrapper">
           <app-icon [imagePath]="'/pencil.svg'"></app-icon>
         </div>
-        <button class="delete">წაშლა</button>
-      </div>
-    </div>
-
-    <div class="current-wrapper">
-      <p class="current-text">შექმენით კომპონენტი თასქების სიის გამოსატანად.</p>
-      <span class="current">მიმდინარე</span>
-      <div class="delete-edit-wrapper">
-        <div class="edit-wrapper">
-          <app-icon [imagePath]="'/pencil.svg'"></app-icon>
-        </div>
-        <button class="delete">წაშლა</button>
+        <button (click)="deleteTask(task)" class="delete">წაშლა</button>
       </div>
     </div>
   `,
-  styleUrl: './current-task.component.css',
+  styleUrls: ['./current-task.component.css'],
 })
-export class CurrentTaskComponent {}
+export class CurrentTaskComponent {
+  tasks = [
+    {
+      text: 'შექმენით კომპონენტი თასქების სიის გამოსატანად.',
+      status: 'მიმდინარე',
+    },
+    {
+      text: 'შექმენით კომპონენტი თასქების სიის გამოსატანად.',
+      status: 'მიმდინარე',
+    },
+    {
+      text: 'შექმენით კომპონენტი თასქების სიის გამოსატანად.',
+      status: 'მიმდინარე',
+    },
+  ];
+
+  deleteTask(task: { text: string; status: string }) {
+    this.tasks = this.tasks.filter((t) => t !== task);
+  }
+}

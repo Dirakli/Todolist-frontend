@@ -4,6 +4,7 @@ import { HeaderComponent } from './header/header.component';
 import { IconComponent } from './helpers/icon/icon.component';
 import { NoticeComponent } from './notice/notice.component';
 import { AddComponent } from './add/add.component';
+import { CurrentTaskComponent } from './current-task/current-task.component';
 @Component({
   selector: 'app-root',
   standalone: true,
@@ -13,6 +14,7 @@ import { AddComponent } from './add/add.component';
     IconComponent,
     NoticeComponent,
     AddComponent,
+    CurrentTaskComponent,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',

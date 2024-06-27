@@ -2,6 +2,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  padding: 33px 60px;
 }
 
 .wrapper {
@@ -31,6 +32,7 @@
   background-color: #fafafa;
   border-bottom: 3px solid #ffffff;
   height: 74px;
+  padding: 0 60px;
 }
 
 .delete-edit-wrapper {
@@ -46,6 +48,7 @@
   width: 40px;
   height: 40px;
   margin-right: 20px;
+  cursor: pointer;
 }
 
 .current-text {
@@ -57,7 +60,7 @@
 
 .current {
   color: #ffdf8c;
-  font-weight: 400;
+  font-weight: 600;
   font-size: 18px;
   line-height: 21.6px;
 }
@@ -67,10 +70,18 @@
   justify-content: center;
   align-items: center;
   background-color: #ffadad;
-  /* width: 100%; */
   width: 150px;
   height: 40px;
   border-radius: 22.5px;
   color: #ffffff;
   border: none;
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 21.6px;
+  cursor: pointer;
+}
+
+.delete:hover {
+  background-color: #ff6b6b;
+  transition: 0.3s;
 }

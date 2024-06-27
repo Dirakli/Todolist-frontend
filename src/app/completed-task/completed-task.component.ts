@@ -1,16 +1,15 @@
 import { Component } from '@angular/core';
 import { IconComponent } from '../helpers/icon/icon.component';
 import { CommonModule, NgFor } from '@angular/common';
-
 @Component({
-  selector: 'app-current-task',
+  selector: 'app-completed-task',
   standalone: true,
   imports: [IconComponent, NgFor, CommonModule],
   template: `
     <div class="container">
       <div class="wrapper">
-        <app-icon [imagePath]="'/two-arrow-right.svg'"></app-icon>
-        <span class="text">მიმდინარე დავალებები</span>
+        <app-icon [imagePath]="'/compl-icon.svg'"></app-icon>
+        <span class="text">დასრულებული დავალებები</span>
       </div>
       <span class="status">სტატუსი</span>
     </div>
@@ -31,9 +30,9 @@ import { CommonModule, NgFor } from '@angular/common';
       </div>
     </div>
   `,
-  styleUrls: ['./current-task.component.css'],
+  styleUrls: ['./completed-task.component.css'],
 })
-export class CurrentTaskComponent {
+export class CompletedTaskComponent {
   tasks = [
     {
       id: 1,

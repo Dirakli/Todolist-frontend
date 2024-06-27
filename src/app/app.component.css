@@ -13,3 +13,13 @@
   text-align: center;
   margin-top: 80px;
 }
+
+.main-contest {
+  padding: 50px;
+}
+
+.container {
+  border-radius: 50px;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(185, 170, 170, 0.1);
+}

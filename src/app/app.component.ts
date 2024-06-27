@@ -5,6 +5,7 @@ import { IconComponent } from './helpers/icon/icon.component';
 import { NoticeComponent } from './notice/notice.component';
 import { AddComponent } from './add/add.component';
 import { CurrentTaskComponent } from './current-task/current-task.component';
+import { CompletedTaskComponent } from './completed-task/completed-task.component';
 @Component({
   selector: 'app-root',
   standalone: true,
@@ -15,6 +16,7 @@ import { CurrentTaskComponent } from './current-task/current-task.component';
     NoticeComponent,
     AddComponent,
     CurrentTaskComponent,
+    CompletedTaskComponent,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',

@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { IconComponent } from '../helpers/icon/icon.component';
 import { CommonModule, NgFor } from '@angular/common';
+import { TaskService } from '../services/task.service'; // Import TaskService
+
 @Component({
   selector: 'app-completed-task',
   standalone: true,
@@ -13,9 +15,12 @@ import { CommonModule, NgFor } from '@angular/common';
       </div>
       <span class="status">სტატუსი</span>
     </div>
-    <div *ngFor="let task of tasks" class="current-wrapper">
-      <p class="current-text">{{ task.text }}</p>
-      <span class="current">{{ task.status }}</span>
+    <div
+      *ngFor="let task of taskService.completedTasks"
+      class="completed-wrapper"
+    >
+      <p class="completed-text">{{ task.text }}</p>
+      <span class="completed">{{ task.status }}</span>
       <div class="delete-edit-wrapper">
         <div
           class="edit-wrapper"
@@ -33,40 +38,17 @@ import { CommonModule, NgFor } from '@angular/common';
   styleUrls: ['./completed-task.component.css'],
 })
 export class CompletedTaskComponent {
-  tasks = [
-    {
-      id: 1,
-      text: 'შექმენით კომპონენტი თასქების სიის გამოსატანად.',
-      status: 'მიმდინარე',
-      editing: false,
-    },
-    {
-      id: 2,
-      text: 'შექმენით კომპონენტი თასქების სიის გამოსატანად.',
-      status: 'მიმდინარე',
-      editing: false,
-    },
-    {
-      id: 3,
-      text: 'შექმენით კომპონენტი თასქების სიის გამოსატანად.',
-      status: 'მიმდინარე',
-      editing: false,
-    },
-  ];
-
   editIndex: { id: number; text: string } | null = null;
 
+  constructor(public taskService: TaskService) {} // Inject TaskService
+
   toggleEdit(task: { id: number; text: string }) {
-    if (this.editIndex && this.editIndex.id === task.id) {
-      this.editIndex = null;
-    } else {
-      this.editIndex = task;
-    }
+    this.editIndex = this.editIndex?.id === task.id ? null : task;
   }
 
   deleteTask(task: { id: number; text: string }) {
-    this.tasks = this.tasks.filter((t) => t !== task);
-    if (this.editIndex && this.editIndex.id === task.id) {
+    this.taskService.deleteTask(task, 'დასრულებული');
+    if (this.editIndex?.id === task.id) {
       this.editIndex = null;
     }
   }

@@ -25,7 +25,7 @@
   line-height: 21.6px;
 }
 
-.current-wrapper {
+.completed-wrapper {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -51,18 +51,20 @@
   cursor: pointer;
 }
 
-.current-text {
+.completed-text {
   color: #383e59;
   font-weight: 400;
   font-size: 16px;
   line-height: 19.2px;
+  width: 50%;
 }
 
-.current {
+.completed {
   color: #8ff4db;
   font-weight: 600;
   font-size: 18px;
   line-height: 21.6px;
+  width: 25%;
 }
 
 .delete {

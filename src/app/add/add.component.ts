@@ -36,7 +36,7 @@ import { TaskService } from '../services/task.service'; // Import TaskService
             <span>{{ statuses.current }}</span>
             <app-icon
               *ngIf="selectedIcon === 'icon-orange'"
-              [imagePath]="'/iconOrange.svg'"
+              [imagePath]="'/icon-orange.svg'"
             ></app-icon>
           </div>
           <div
@@ -46,7 +46,7 @@ import { TaskService } from '../services/task.service'; // Import TaskService
             <span>{{ statuses.completed }}</span>
             <app-icon
               *ngIf="selectedIcon === 'icon-sky'"
-              [imagePath]="'/iconSky.svg'"
+              [imagePath]="'/icon-sky.svg'"
             ></app-icon>
           </div>
         </div>

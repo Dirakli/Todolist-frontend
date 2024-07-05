@@ -18,17 +18,12 @@ import { TaskService } from '../services/task.service'; // Import TaskService
     <div
       *ngFor="let task of taskService.completedTasks"
       class="completed-wrapper"
+      (click)="editTask(task)"
     >
       <p class="completed-text">{{ task.text }}</p>
       <span class="completed">{{ task.status }}</span>
       <div class="delete-edit-wrapper">
-        <div
-          class="edit-wrapper"
-          [ngStyle]="{
-            'background-color': editIndex === task ? '#FFDF8C' : ''
-          }"
-          (click)="toggleEdit(task)"
-        >
+        <div class="edit-wrapper">
           <app-icon [imagePath]="'/pencil.svg'"></app-icon>
         </div>
         <button (click)="deleteTask(task)" class="delete">წაშლა</button>
@@ -38,18 +33,16 @@ import { TaskService } from '../services/task.service'; // Import TaskService
   styleUrls: ['./completed-task.component.css'],
 })
 export class CompletedTaskComponent {
-  editIndex: { id: number; text: string } | null = null;
-
   constructor(public taskService: TaskService) {} // Inject TaskService
 
-  toggleEdit(task: { id: number; text: string }) {
-    this.editIndex = this.editIndex?.id === task.id ? null : task;
+  editTask(task: { id: number; text: string; status: string }) {
+    this.taskService.setEditTaskId(task.id);
+    this.taskService.setEditTaskText(task.text);
+    this.taskService.setEditMessage('რედაქტირება');
+    this.taskService.setSelectedStatus(task.status);
   }
 
   deleteTask(task: { id: number; text: string }) {
     this.taskService.deleteTask(task, 'დასრულებული');
-    if (this.editIndex?.id === task.id) {
-      this.editIndex = null;
-    }
   }
 }

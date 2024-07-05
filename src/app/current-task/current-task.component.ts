@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { IconComponent } from '../helpers/icon/icon.component';
 import { CommonModule, NgFor } from '@angular/common';
-import { TaskService } from '../services/task.service'; // Import TaskService
+import { TaskService } from '../services/task.service';
 
 @Component({
   selector: 'app-current-task',
@@ -22,7 +22,7 @@ import { TaskService } from '../services/task.service'; // Import TaskService
         <div
           class="edit-wrapper"
           [ngStyle]="{
-            'background-color': editIndex === task ? '#FFDF8C' : ''
+            'background-color': editIndex === task.id ? '#FFDF8C' : ''
           }"
           (click)="toggleEdit(task)"
         >
@@ -35,18 +35,30 @@ import { TaskService } from '../services/task.service'; // Import TaskService
   styleUrls: ['./current-task.component.css'],
 })
 export class CurrentTaskComponent {
-  editIndex: { id: number; text: string } | null = null;
+  editIndex: number | null = null;
 
-  constructor(public taskService: TaskService) {} // Inject TaskService
+  constructor(public taskService: TaskService) {}
 
   toggleEdit(task: { id: number; text: string }) {
-    this.editIndex = this.editIndex?.id === task.id ? null : task;
+    this.editIndex = this.editIndex === task.id ? null : task.id;
+    if (this.editIndex !== null) {
+      this.taskService.setEditMessage('Editing task...');
+      this.taskService.setEditTaskText(task.text);
+      this.taskService.setEditTaskId(task.id);
+    } else {
+      this.taskService.setEditMessage(null);
+      this.taskService.setEditTaskText(null);
+      this.taskService.setEditTaskId(null);
+    }
   }
 
   deleteTask(task: { id: number; text: string }) {
     this.taskService.deleteTask(task, 'მიმდინარე');
-    if (this.editIndex?.id === task.id) {
+    if (this.editIndex === task.id) {
       this.editIndex = null;
+      this.taskService.setEditMessage(null);
+      this.taskService.setEditTaskText(null);
+      this.taskService.setEditTaskId(null);
     }
   }
 }

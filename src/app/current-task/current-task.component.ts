@@ -3,6 +3,7 @@ import { IconComponent } from '../helpers/icon/icon.component';
 import { CommonModule, NgFor } from '@angular/common';
 import { Task } from '../types/task.model';
 import { ItemsService } from '../newservices/task.service';
+
 @Component({
   selector: 'app-current-task',
   standalone: true,
@@ -73,7 +74,7 @@ export class CurrentTaskComponent implements OnInit {
     const newTask: Partial<Task> = { name: text, status };
     this.itemsService.addTask(newTask).subscribe(
       (addedTask) => {
-        this.tasks.push(addedTask);
+        this.tasks = [...this.tasks, addedTask];
       },
       (error) => {
         console.error('Failed to add task:', error);

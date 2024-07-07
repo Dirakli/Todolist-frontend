@@ -1,13 +1,14 @@
 import { Component, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms'; // Import FormsModule
+import { FormsModule } from '@angular/forms';
 import { IconComponent } from '../helpers/icon/icon.component';
-import { TaskService } from '../services/task.service'; // Import TaskService
+import { ItemsService } from '../newservices/task.service';
+import { Task } from '../types/task.model';
 
 @Component({
   selector: 'app-add',
   standalone: true,
-  imports: [CommonModule, FormsModule, IconComponent], // Include FormsModule
+  imports: [CommonModule, FormsModule, IconComponent],
   template: `
     <div class="wrapper">
       <div class="input-wrapper">
@@ -71,7 +72,7 @@ export class AddComponent {
     completed: 'დასრულებული სტატუსი',
   };
 
-  constructor(private taskService: TaskService) {} // Inject TaskService
+  constructor(private itemsService: ItemsService) {}
 
   toggleDropdown(event: MouseEvent) {
     event.stopPropagation();
@@ -83,26 +84,36 @@ export class AddComponent {
     this.selectedIcon = icon;
   }
 
-  addTask() {
-    if (this.taskText.trim() && this.selectedStatus) {
-      this.taskService.addTask(
-        this.taskText,
-        this.selectedStatus === this.statuses.current
-          ? 'მიმდინარე'
-          : 'დასრულებული'
-      );
-      this.taskText = '';
-      this.selectedStatus = null;
-      this.selectedIcon = null;
-      this.dropdownOpen = false;
-    }
-  }
-
   @HostListener('document:click', ['$event'])
   handleClickOutside(event: Event) {
     const target = event.target as HTMLElement;
     if (!target.closest('.dropdown')) {
       this.dropdownOpen = false;
+    }
+  }
+
+  addTask() {
+    if (this.taskText && this.selectedStatus) {
+      const statusId = this.selectedStatus === this.statuses.current ? 1 : 2;
+
+      const newTask: Partial<Task> = {
+        name: this.taskText,
+        status: statusId,
+      };
+
+      this.itemsService.addTask(newTask).subscribe(
+        (response) => {
+          console.log('Task added successfully:', response);
+          this.taskText = '';
+          this.selectedStatus = null;
+          this.selectedIcon = null;
+        },
+        (error) => {
+          console.error('Error adding task:', error);
+        }
+      );
+    } else {
+      console.warn('Please enter task text and select a status.');
     }
   }
 }

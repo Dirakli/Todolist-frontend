@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { HeaderComponent } from './header/header.component';
 import { IconComponent } from './helpers/icon/icon.component';
@@ -7,7 +7,7 @@ import { AddComponent } from './add/add.component';
 import { CurrentTaskComponent } from './current-task/current-task.component';
 import { CompletedTaskComponent } from './completed-task/completed-task.component';
 import { Task } from './types/task.model';
-import { TaskService } from './newservices/task.service';
+import { ItemsService } from './newservices/task.service';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -26,19 +26,6 @@ import { CommonModule } from '@angular/common';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })
-export class AppComponent implements OnInit {
+export class AppComponent {
   title = 'TodoList';
-  loading = true;
-  task: Task | null = null;
-
-  constructor(private taskService: TaskService) {}
-
-  ngOnInit() {
-    const taskId = 1;
-    this.taskService.getTaskByStatus(taskId).subscribe((response) => {
-      this.loading = false;
-      this.task = response;
-      console.log(response);
-    });
-  }
 }

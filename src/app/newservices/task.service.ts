@@ -1,22 +1,42 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 import { Task } from '../types/task.model';
+
 @Injectable({ providedIn: 'root' })
-export class TaskService {
-  baseUrl = 'https://localhost:7292';
+export class ItemsService {
+  private baseUrl = 'https://localhost:7292/api/Assignment';
 
   constructor(private http: HttpClient) {}
 
-  getTaskByStatus(status: number): Observable<Task> {
-    return this.http.get<Task>(`${this.baseUrl}/api/Assignment/${status}`);
+  getTasksByStatus(status: number): Observable<Task[]> {
+    const params = new HttpParams().set('status', status.toString());
+    return this.http
+      .get<Task[]>(this.baseUrl, { params })
+      .pipe(catchError(this.handleError));
   }
 
   addTask(task: Partial<Task>): Observable<Task> {
-    return this.http.post<Task>(`${this.baseUrl}/api/Assignment`, task);
+    return this.http
+      .post<Task>(this.baseUrl, task)
+      .pipe(catchError(this.handleError));
   }
 
   updateTask(id: number, task: Partial<Task>): Observable<Task> {
-    return this.http.put<Task>(`${this.baseUrl}/api/Assignment/${id}`, task);
+    return this.http
+      .put<Task>(`${this.baseUrl}/${id}`, task)
+      .pipe(catchError(this.handleError));
+  }
+
+  deleteTask(id: number): Observable<void> {
+    return this.http
+      .delete<void>(`${this.baseUrl}/${id}`)
+      .pipe(catchError(this.handleError));
+  }
+
+  private handleError(error: any): Observable<never> {
+    console.error('An error occurred:', error);
+    return throwError('Something went wrong; please try again later.');
   }
 }

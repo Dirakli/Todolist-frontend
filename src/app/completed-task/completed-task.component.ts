@@ -1,8 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { IconComponent } from '../helpers/icon/icon.component';
 import { CommonModule, NgFor } from '@angular/common';
-import { TaskService } from '../services/task.service'; // Import TaskService
-
+import { Task } from '../types/task.model';
+import { ItemsService } from '../newservices/task.service';
 @Component({
   selector: 'app-completed-task',
   standalone: true,
@@ -15,15 +15,21 @@ import { TaskService } from '../services/task.service'; // Import TaskService
       </div>
       <span class="status">სტატუსი</span>
     </div>
-    <div
-      *ngFor="let task of taskService.completedTasks"
-      class="completed-wrapper"
-      (click)="editTask(task)"
-    >
-      <p class="completed-text">{{ task.text }}</p>
-      <span class="completed">{{ task.status }}</span>
+    <div *ngIf="loading">loading...</div>
+
+    <div *ngFor="let task of tasks" class="completed-wrapper">
+      <p class="completed-text">{{ task.name }}</p>
+      <span class="completed">{{
+        task.status === 2 ? 'დასრულებული' : 'მიმდინარე'
+      }}</span>
       <div class="delete-edit-wrapper">
-        <div class="edit-wrapper">
+        <div
+          class="edit-wrapper"
+          [ngStyle]="{
+            'background-color': editIndex === task.id ? '#FFDF8C' : ''
+          }"
+          (click)="toggleEdit(task)"
+        >
           <app-icon [imagePath]="'/pencil.svg'"></app-icon>
         </div>
         <button (click)="deleteTask(task)" class="delete">წაშლა</button>
@@ -32,17 +38,73 @@ import { TaskService } from '../services/task.service'; // Import TaskService
   `,
   styleUrls: ['./completed-task.component.css'],
 })
-export class CompletedTaskComponent {
-  constructor(public taskService: TaskService) {} // Inject TaskService
+export class CompletedTaskComponent implements OnInit {
+  editIndex: number | null = null;
+  loading = true;
+  tasks: Task[] = [];
+  error: string | null = null;
 
-  editTask(task: { id: number; text: string; status: string }) {
-    this.taskService.setEditTaskId(task.id);
-    this.taskService.setEditTaskText(task.text);
-    this.taskService.setEditMessage('რედაქტირება');
-    this.taskService.setSelectedStatus(task.status);
+  constructor(private itemsService: ItemsService) {}
+
+  ngOnInit(): void {
+    const status = 2;
+    this.itemsService.getTasksByStatus(status).subscribe(
+      (response) => {
+        this.loading = false;
+        this.tasks = response;
+      },
+      (error) => {
+        this.loading = false;
+        this.error = error;
+        console.error('Error fetching tasks:', error);
+      }
+    );
   }
 
-  deleteTask(task: { id: number; text: string }) {
-    this.taskService.deleteTask(task, 'დასრულებული');
+  toggleEdit(task: Task) {
+    this.editIndex = this.editIndex === task.id ? null : task.id;
+  }
+
+  cancelEdit() {
+    this.editIndex = null;
+  }
+
+  addTask(text: string, status: 1 | 2) {
+    const newTask: Partial<Task> = { name: text, status };
+    this.itemsService.addTask(newTask).subscribe(
+      (addedTask) => {
+        this.tasks.push(addedTask);
+      },
+      (error) => {
+        console.error('Failed to add task:', error);
+      }
+    );
+  }
+
+  deleteTask(task: Task) {
+    this.itemsService.deleteTask(task.id).subscribe(
+      () => {
+        this.tasks = this.tasks.filter((t) => t.id !== task.id);
+        if (this.editIndex === task.id) {
+          this.cancelEdit();
+        }
+      },
+      (error) => {
+        console.error('Failed to delete task:', error);
+      }
+    );
+  }
+
+  updateTask(task: Task) {
+    this.itemsService.updateTask(task.id, task).subscribe(
+      () => {
+        if (this.editIndex === task.id) {
+          this.cancelEdit();
+        }
+      },
+      (error) => {
+        console.error('Failed to update task:', error);
+      }
+    );
   }
 }

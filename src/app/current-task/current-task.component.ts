@@ -1,8 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { IconComponent } from '../helpers/icon/icon.component';
 import { CommonModule, NgFor } from '@angular/common';
-import { TaskService } from '../services/task.service';
-
+import { Task } from '../types/task.model';
+import { ItemsService } from '../newservices/task.service';
 @Component({
   selector: 'app-current-task',
   standalone: true,
@@ -15,9 +15,13 @@ import { TaskService } from '../services/task.service';
       </div>
       <span class="status">სტატუსი</span>
     </div>
-    <div *ngFor="let task of taskService.currentTasks" class="current-wrapper">
-      <p class="current-text">{{ task.text }}</p>
-      <span class="current">{{ task.status }}</span>
+
+    <div *ngIf="loading">loading...</div>
+    <div *ngFor="let task of tasks" class="current-wrapper">
+      <p class="current-text">{{ task.name }}</p>
+      <span class="current">{{
+        task.status === 1 ? 'მიმდინარე' : 'დასრულებული'
+      }}</span>
       <div class="delete-edit-wrapper">
         <div
           class="edit-wrapper"
@@ -34,31 +38,73 @@ import { TaskService } from '../services/task.service';
   `,
   styleUrls: ['./current-task.component.css'],
 })
-export class CurrentTaskComponent {
+export class CurrentTaskComponent implements OnInit {
   editIndex: number | null = null;
+  loading = true;
+  tasks: Task[] = [];
+  error: string | null = null;
 
-  constructor(public taskService: TaskService) {}
+  constructor(private itemsService: ItemsService) {}
 
-  toggleEdit(task: { id: number; text: string }) {
-    this.editIndex = this.editIndex === task.id ? null : task.id;
-    if (this.editIndex !== null) {
-      this.taskService.setEditMessage('Editing task...');
-      this.taskService.setEditTaskText(task.text);
-      this.taskService.setEditTaskId(task.id);
-    } else {
-      this.taskService.setEditMessage(null);
-      this.taskService.setEditTaskText(null);
-      this.taskService.setEditTaskId(null);
-    }
+  ngOnInit(): void {
+    const status = 1;
+    this.itemsService.getTasksByStatus(status).subscribe(
+      (response) => {
+        this.loading = false;
+        this.tasks = response;
+      },
+      (error) => {
+        this.loading = false;
+        this.error = error;
+        console.error('Error fetching tasks:', error);
+      }
+    );
   }
 
-  deleteTask(task: { id: number; text: string }) {
-    this.taskService.deleteTask(task, 'მიმდინარე');
-    if (this.editIndex === task.id) {
-      this.editIndex = null;
-      this.taskService.setEditMessage(null);
-      this.taskService.setEditTaskText(null);
-      this.taskService.setEditTaskId(null);
-    }
+  toggleEdit(task: Task) {
+    this.editIndex = this.editIndex === task.id ? null : task.id;
+  }
+
+  cancelEdit() {
+    this.editIndex = null;
+  }
+
+  addTask(text: string, status: 1 | 2) {
+    const newTask: Partial<Task> = { name: text, status };
+    this.itemsService.addTask(newTask).subscribe(
+      (addedTask) => {
+        this.tasks.push(addedTask);
+      },
+      (error) => {
+        console.error('Failed to add task:', error);
+      }
+    );
+  }
+
+  deleteTask(task: Task) {
+    this.itemsService.deleteTask(task.id).subscribe(
+      () => {
+        this.tasks = this.tasks.filter((t) => t.id !== task.id);
+        if (this.editIndex === task.id) {
+          this.cancelEdit();
+        }
+      },
+      (error) => {
+        console.error('Failed to delete task:', error);
+      }
+    );
+  }
+
+  updateTask(task: Task) {
+    this.itemsService.updateTask(task.id, task).subscribe(
+      () => {
+        if (this.editIndex === task.id) {
+          this.cancelEdit();
+        }
+      },
+      (error) => {
+        console.error('Failed to update task:', error);
+      }
+    );
   }
 }

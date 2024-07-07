@@ -6,6 +6,17 @@
       <app-icon [imagePath]="'/add-icon.svg'"></app-icon>
       <span class="add-task">ახალი დავალების დამატება</span>
     </div>
+    <div *ngIf="task">
+      <div class="task-card">
+        <h3>{{ task.id }}</h3>
+        <p>Status: {{ task.status }}</p>
+      </div>
+    </div>
+
+    <div *ngIf="loading">loading...</div>
+
+    <div *ngIf="loading">loading...</div>
+
     <app-add></app-add>
     <app-current-task></app-current-task>
     <app-completed-task></app-completed-task>

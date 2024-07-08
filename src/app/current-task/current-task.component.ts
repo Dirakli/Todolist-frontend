@@ -1,13 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { IconComponent } from '../helpers/icon/icon.component';
 import { CommonModule, NgFor } from '@angular/common';
+import { FormsModule } from '@angular/forms'; // Import FormsModule
 import { Task } from '../types/task.model';
 import { ItemsService } from '../newservices/task.service';
 
 @Component({
   selector: 'app-current-task',
   standalone: true,
-  imports: [IconComponent, NgFor, CommonModule],
+  imports: [IconComponent, NgFor, CommonModule, FormsModule], // Include FormsModule here
   template: `
     <div class="container">
       <div class="wrapper">
@@ -19,7 +20,17 @@ import { ItemsService } from '../newservices/task.service';
 
     <div *ngIf="loading">loading...</div>
     <div *ngFor="let task of tasks" class="current-wrapper">
-      <p class="current-text">{{ task.name }}</p>
+      <ng-container *ngIf="editIndex === task.id; else displayTask">
+        <input
+          type="text"
+          [(ngModel)]="task.name"
+          (blur)="saveTask(task)"
+          (keyup.enter)="saveTask(task)"
+        />
+      </ng-container>
+      <ng-template #displayTask>
+        <p class="current-text">{{ task.name }}</p>
+      </ng-template>
       <span class="current">{{
         task.status === 1 ? 'მიმდინარე' : 'დასრულებული'
       }}</span>
@@ -67,6 +78,11 @@ export class CurrentTaskComponent implements OnInit {
   }
 
   cancelEdit() {
+    this.editIndex = null;
+  }
+
+  saveTask(task: Task) {
+    this.updateTask(task);
     this.editIndex = null;
   }
 

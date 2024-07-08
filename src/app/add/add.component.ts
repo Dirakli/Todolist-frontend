@@ -65,7 +65,9 @@ import { NoticeComponent } from '../notice/notice.component';
 
       <button class="btn" (click)="addTask()">
         <app-icon class="btn-icon" [imagePath]="'/plus-icon.svg'"></app-icon>
-        <span class="btn-text">დამატება</span>
+        <span class="btn-text">
+          {{ taskBeingEdited ? 'რედაქტირება' : 'დამატება' }}
+        </span>
       </button>
     </div>
   `,
@@ -151,6 +153,7 @@ export class AddComponent {
     } else {
       console.warn('Please enter task text and select a status.');
     }
+    window.location.reload();
   }
 
   resetForm() {

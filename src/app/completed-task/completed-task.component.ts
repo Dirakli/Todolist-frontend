@@ -3,7 +3,7 @@ import { IconComponent } from '../helpers/icon/icon.component';
 import { CommonModule, NgFor } from '@angular/common';
 import { Task } from '../types/task.model';
 import { ItemsService } from '../services/task.service';
-
+import { EditStateService } from '../services/edit.service';
 @Component({
   selector: 'app-completed-task',
   standalone: true,
@@ -25,7 +25,6 @@ import { ItemsService } from '../services/task.service';
       <div class="delete-edit-wrapper">
         <div
           class="edit-wrapper"
-          (click)="editTask.emit(task)"
           (click)="onEditTask(task)"
           [ngStyle]="{
             'background-color': editIndex === task.id ? '#FFDF8C' : ''
@@ -47,7 +46,10 @@ export class CompletedTaskComponent implements OnInit {
   error: string | null = null;
   editIndex: number | undefined;
 
-  constructor(private itemsService: ItemsService) {}
+  constructor(
+    private itemsService: ItemsService,
+    private editStateService: EditStateService
+  ) {}
 
   ngOnInit(): void {
     const status = 2;
@@ -62,10 +64,14 @@ export class CompletedTaskComponent implements OnInit {
         console.error('Error fetching tasks:', error);
       }
     );
+
+    this.editStateService.editIndex$.subscribe((index: number | undefined) => {
+      this.editIndex = index;
+    });
   }
 
   onEditTask(task: Task): void {
-    this.editIndex = task.id;
+    this.editStateService.setEditIndex(task.id);
     this.editTask.emit(task);
   }
 
@@ -78,5 +84,6 @@ export class CompletedTaskComponent implements OnInit {
         console.error('Failed to delete task:', error);
       }
     );
+    window.location.reload();
   }
 }

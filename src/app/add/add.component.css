@@ -59,7 +59,7 @@ label {
 .input-wrapper {
   display: flex;
   width: 100%;
-  max-width: 500px;
+  max-width: 350px;
   flex-direction: column;
 }
 
@@ -82,7 +82,7 @@ label {
 
 .dropdown {
   position: relative;
-  max-width: 350px;
+  max-width: 320px;
   height: 40px;
   width: 100%;
   background-color: #ffffff;
@@ -105,7 +105,7 @@ label {
 
 .btn {
   width: 100%;
-  max-width: 210px;
+  max-width: 150px;
   height: 40px;
   border-radius: 22.5px;
   background-color: #383e59;

@@ -1,9 +1,15 @@
-import { Component, HostListener } from '@angular/core';
+import {
+  Component,
+  HostListener,
+  Input,
+  Output,
+  EventEmitter,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IconComponent } from '../helpers/icon/icon.component';
-import { ItemsService } from '../newservices/task.service';
 import { Task } from '../types/task.model';
+import { ItemsService } from '../newservices/task.service';
 
 @Component({
   selector: 'app-add',
@@ -62,10 +68,25 @@ import { Task } from '../types/task.model';
   styleUrls: ['./add.component.css'],
 })
 export class AddComponent {
+  @Input() set editTask(task: Task | null) {
+    if (task) {
+      this.taskText = task.name;
+      this.selectedStatus =
+        task.status === 1 ? this.statuses.current : this.statuses.completed;
+      this.selectedIcon = task.status === 1 ? 'icon-orange' : 'icon-sky';
+      this.taskBeingEdited = task;
+    } else {
+      this.resetForm();
+    }
+  }
+
+  @Output() taskAdded = new EventEmitter<Task>();
+
   dropdownOpen = false;
   selectedStatus: string | null = null;
   selectedIcon: string | null = null;
   taskText: string = '';
+  taskBeingEdited: Task | null = null;
 
   statuses = {
     current: 'მიმდინარე სტატუსი',
@@ -95,25 +116,44 @@ export class AddComponent {
   addTask() {
     if (this.taskText && this.selectedStatus) {
       const statusId = this.selectedStatus === this.statuses.current ? 1 : 2;
-
       const newTask: Partial<Task> = {
         name: this.taskText,
         status: statusId,
       };
 
-      this.itemsService.addTask(newTask).subscribe(
-        (response) => {
-          console.log('Task added successfully:', response);
-          this.taskText = '';
-          this.selectedStatus = null;
-          this.selectedIcon = null;
-        },
-        (error) => {
-          console.error('Error adding task:', error);
-        }
-      );
+      if (this.taskBeingEdited) {
+        // If a task is being edited, update it
+        newTask.id = this.taskBeingEdited.id;
+        this.itemsService.updateTask(newTask.id!, newTask).subscribe(
+          (updatedTask: any) => {
+            this.taskAdded.emit(updatedTask);
+            this.resetForm();
+          },
+          (error: any) => {
+            console.error('Error updating task:', error);
+          }
+        );
+      } else {
+        // If not editing, add a new task
+        this.itemsService.addTask(newTask).subscribe(
+          (response: any) => {
+            this.taskAdded.emit(response);
+            this.resetForm();
+          },
+          (error: any) => {
+            console.error('Error adding task:', error);
+          }
+        );
+      }
     } else {
       console.warn('Please enter task text and select a status.');
     }
+  }
+
+  resetForm() {
+    this.taskText = '';
+    this.selectedStatus = null;
+    this.selectedIcon = null;
+    this.taskBeingEdited = null;
   }
 }

@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { IconComponent } from '../helpers/icon/icon.component';
 import { CommonModule, NgFor } from '@angular/common';
 import { Task } from '../types/task.model';
 import { ItemsService } from '../newservices/task.service';
+
 @Component({
   selector: 'app-completed-task',
   standalone: true,
@@ -16,7 +17,6 @@ import { ItemsService } from '../newservices/task.service';
       <span class="status">სტატუსი</span>
     </div>
     <div *ngIf="loading">loading...</div>
-
     <div *ngFor="let task of tasks" class="completed-wrapper">
       <p class="completed-text">{{ task.name }}</p>
       <span class="completed">{{
@@ -25,10 +25,11 @@ import { ItemsService } from '../newservices/task.service';
       <div class="delete-edit-wrapper">
         <div
           class="edit-wrapper"
+          (click)="editTask.emit(task)"
+          (click)="onEditTask(task)"
           [ngStyle]="{
             'background-color': editIndex === task.id ? '#FFDF8C' : ''
           }"
-          (click)="toggleEdit(task)"
         >
           <app-icon [imagePath]="'/pencil.svg'"></app-icon>
         </div>
@@ -39,10 +40,12 @@ import { ItemsService } from '../newservices/task.service';
   styleUrls: ['./completed-task.component.css'],
 })
 export class CompletedTaskComponent implements OnInit {
-  editIndex: number | null = null;
+  @Output() editTask = new EventEmitter<Task>();
+
   loading = true;
   tasks: Task[] = [];
   error: string | null = null;
+  editIndex: number | undefined;
 
   constructor(private itemsService: ItemsService) {}
 
@@ -61,49 +64,18 @@ export class CompletedTaskComponent implements OnInit {
     );
   }
 
-  toggleEdit(task: Task) {
-    this.editIndex = this.editIndex === task.id ? null : task.id;
-  }
-
-  cancelEdit() {
-    this.editIndex = null;
-  }
-
-  addTask(text: string, status: 1 | 2) {
-    const newTask: Partial<Task> = { name: text, status };
-    this.itemsService.addTask(newTask).subscribe(
-      (addedTask) => {
-        this.tasks.push(addedTask);
-      },
-      (error) => {
-        console.error('Failed to add task:', error);
-      }
-    );
+  onEditTask(task: Task): void {
+    this.editIndex = task.id;
+    this.editTask.emit(task);
   }
 
   deleteTask(task: Task) {
     this.itemsService.deleteTask(task.id).subscribe(
       () => {
         this.tasks = this.tasks.filter((t) => t.id !== task.id);
-        if (this.editIndex === task.id) {
-          this.cancelEdit();
-        }
       },
       (error) => {
         console.error('Failed to delete task:', error);
-      }
-    );
-  }
-
-  updateTask(task: Task) {
-    this.itemsService.updateTask(task.id, task).subscribe(
-      () => {
-        if (this.editIndex === task.id) {
-          this.cancelEdit();
-        }
-      },
-      (error) => {
-        console.error('Failed to update task:', error);
       }
     );
   }

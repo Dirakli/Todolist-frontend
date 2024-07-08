@@ -28,4 +28,13 @@ import { CommonModule } from '@angular/common';
 })
 export class AppComponent {
   title = 'TodoList';
+  taskToEdit: Task | null = null;
+
+  onEditTask(task: Task) {
+    this.taskToEdit = task;
+  }
+
+  onTaskAdded(task: Task) {
+    this.taskToEdit = null;
+  }
 }

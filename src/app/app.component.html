@@ -1,16 +1,19 @@
 <div class="main-contest">
   <div class="container">
     <app-header></app-header>
-    <app-notice></app-notice>
-    <div class="wrapper">
-      <app-icon [imagePath]="'/add-icon.svg'"></app-icon>
-      <span class="add-task">ახალი დავალების დამატება</span>
-    </div>
+    <app-notice *ngIf="tasks.length === 0"></app-notice>
+
     <app-add
       [editTask]="taskToEdit"
       (taskAdded)="onTaskAdded($event)"
     ></app-add>
-    <app-current-task (editTask)="onEditTask($event)"></app-current-task>
-    <app-completed-task (editTask)="onEditTask($event)"></app-completed-task>
+    <app-current-task
+      *ngIf="tasks.length !== 0"
+      (editTask)="onEditTask($event)"
+    ></app-current-task>
+    <app-completed-task
+      *ngIf="tasks.length !== 0"
+      (editTask)="onEditTask($event)"
+    ></app-completed-task>
   </div>
 </div>

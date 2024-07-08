@@ -5,6 +5,23 @@
   margin-top: 50px;
 }
 
+.add-task {
+  font-size: 18px;
+  line-height: 21.6px;
+  color: #383e59;
+  font-weight: 600;
+  margin-left: 10px;
+}
+
+.wrapper-add {
+  display: flex;
+  align-items: start;
+  justify-content: center;
+  text-align: center;
+  margin-top: 80px;
+  padding-bottom: 10px;
+}
+
 @media (max-width: 500px) {
   .wrapper {
     flex-direction: column;

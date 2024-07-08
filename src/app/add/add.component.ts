@@ -10,13 +10,17 @@ import { FormsModule } from '@angular/forms';
 import { IconComponent } from '../helpers/icon/icon.component';
 import { Task } from '../types/task.model';
 import { ItemsService } from '../services/task.service';
-
+import { NoticeComponent } from '../notice/notice.component';
 @Component({
   selector: 'app-add',
   standalone: true,
-  imports: [CommonModule, FormsModule, IconComponent],
+  imports: [CommonModule, FormsModule, IconComponent, NoticeComponent],
   template: `
     <div class="wrapper">
+      <div class="wrapper-add">
+        <app-icon [imagePath]="'/add-icon.svg'"></app-icon>
+        <span class="add-task">ახალი დავალების დამატება</span>
+      </div>
       <div class="input-wrapper">
         <label for="input">შეიყვანეთ დასახელება</label>
         <input [(ngModel)]="taskText" class="input" id="input" type="text" />
@@ -68,6 +72,7 @@ import { ItemsService } from '../services/task.service';
   styleUrls: ['./add.component.css'],
 })
 export class AddComponent {
+  tasks: any;
   @Input() set editTask(task: Task | null) {
     if (task) {
       this.taskText = task.name;

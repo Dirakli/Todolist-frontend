@@ -2,7 +2,7 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { IconComponent } from '../helpers/icon/icon.component';
 import { CommonModule, NgFor } from '@angular/common';
 import { Task } from '../types/task.model';
-import { ItemsService } from '../newservices/task.service';
+import { ItemsService } from '../services/task.service';
 
 @Component({
   selector: 'app-current-task',

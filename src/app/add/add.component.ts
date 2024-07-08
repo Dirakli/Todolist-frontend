@@ -9,7 +9,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IconComponent } from '../helpers/icon/icon.component';
 import { Task } from '../types/task.model';
-import { ItemsService } from '../newservices/task.service';
+import { ItemsService } from '../services/task.service';
 
 @Component({
   selector: 'app-add',
@@ -122,7 +122,6 @@ export class AddComponent {
       };
 
       if (this.taskBeingEdited) {
-        // If a task is being edited, update it
         newTask.id = this.taskBeingEdited.id;
         this.itemsService.updateTask(newTask.id!, newTask).subscribe(
           (updatedTask: any) => {
@@ -134,7 +133,6 @@ export class AddComponent {
           }
         );
       } else {
-        // If not editing, add a new task
         this.itemsService.addTask(newTask).subscribe(
           (response: any) => {
             this.taskAdded.emit(response);

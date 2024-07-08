@@ -7,7 +7,7 @@ import { AddComponent } from './add/add.component';
 import { CurrentTaskComponent } from './current-task/current-task.component';
 import { CompletedTaskComponent } from './completed-task/completed-task.component';
 import { Task } from './types/task.model';
-import { ItemsService } from './newservices/task.service';
+import { ItemsService } from './services/task.service';
 import { CommonModule } from '@angular/common';
 
 @Component({

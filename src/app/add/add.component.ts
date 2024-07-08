@@ -11,6 +11,7 @@ import { IconComponent } from '../helpers/icon/icon.component';
 import { Task } from '../types/task.model';
 import { ItemsService } from '../services/task.service';
 import { NoticeComponent } from '../notice/notice.component';
+
 @Component({
   selector: 'app-add',
   standalone: true,
@@ -24,6 +25,9 @@ import { NoticeComponent } from '../notice/notice.component';
       <div class="input-wrapper">
         <label for="input">შეიყვანეთ დასახელება</label>
         <input [(ngModel)]="taskText" class="input" id="input" type="text" />
+        <div *ngIf="taskTextError" class="error-message">
+          გთხოვთ შეიყვანოთ დასახელება
+        </div>
       </div>
       <div class="dropdown" (click)="toggleDropdown($event)">
         <span
@@ -62,7 +66,6 @@ import { NoticeComponent } from '../notice/notice.component';
           </div>
         </div>
       </div>
-
       <button class="btn" (click)="addTask()">
         <app-icon class="btn-icon" [imagePath]="'/plus-icon.svg'"></app-icon>
         <span class="btn-text">
@@ -74,7 +77,6 @@ import { NoticeComponent } from '../notice/notice.component';
   styleUrls: ['./add.component.css'],
 })
 export class AddComponent {
-  tasks: any;
   @Input() set editTask(task: Task | null) {
     if (task) {
       this.taskText = task.name;
@@ -94,6 +96,9 @@ export class AddComponent {
   selectedIcon: string | null = null;
   taskText: string = '';
   taskBeingEdited: Task | null = null;
+
+  taskTextError: boolean = false;
+  statusError: boolean = false;
 
   statuses = {
     current: 'მიმდინარე სტატუსი',
@@ -121,7 +126,10 @@ export class AddComponent {
   }
 
   addTask() {
-    if (this.taskText && this.selectedStatus) {
+    this.taskTextError = !this.taskText;
+    this.statusError = !this.selectedStatus;
+
+    if (!this.taskTextError && !this.statusError) {
       const statusId = this.selectedStatus === this.statuses.current ? 1 : 2;
       const newTask: Partial<Task> = {
         name: this.taskText,
@@ -153,7 +161,6 @@ export class AddComponent {
     } else {
       console.warn('Please enter task text and select a status.');
     }
-    window.location.reload();
   }
 
   resetForm() {
@@ -161,5 +168,7 @@ export class AddComponent {
     this.selectedStatus = null;
     this.selectedIcon = null;
     this.taskBeingEdited = null;
+    this.taskTextError = false;
+    this.statusError = false;
   }
 }

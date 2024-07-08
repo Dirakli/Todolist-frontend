@@ -169,3 +169,9 @@ label {
 .dropdown-item:hover {
   background-color: #f1f1f1;
 }
+
+.error-message {
+  color: red;
+  font-size: 16px;
+  margin-top: 5px;
+}

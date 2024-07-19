@@ -23,7 +23,11 @@ import { NoticeComponent } from '../notice/notice.component';
         <span class="add-task">ახალი დავალების დამატება</span>
       </div>
       <div class="input-wrapper">
-        <label for="input">შეიყვანეთ დასახელება</label>
+        <label for="input">
+          {{
+            taskBeingEdited ? 'შეცვალეთ დასახელება' : ' შეიყვანეთ დასახელება'
+          }}
+        </label>
         <input [(ngModel)]="taskText" class="input" id="input" type="text" />
         <div *ngIf="taskTextError" class="error-message">
           გთხოვთ შეიყვანოთ დასახელება
@@ -37,7 +41,7 @@ import { NoticeComponent } from '../notice/notice.component';
             'status-sky': selectedStatus === statuses.completed
           }"
         >
-          {{ selectedStatus || 'აირჩიეთ დამატების სტატუსი' }}
+          {{ selectedStatus || 'აირჩიეთ დავალების სტატუსი' }}
         </span>
         <app-icon
           class="icon"

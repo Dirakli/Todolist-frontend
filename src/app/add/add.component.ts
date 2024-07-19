@@ -17,8 +17,12 @@ import { NoticeComponent } from '../notice/notice.component';
   standalone: true,
   imports: [CommonModule, FormsModule, IconComponent, NoticeComponent],
   template: `
+    <div *ngIf="isStatus1Empty && isStatus2Empty" class="wrapper-add">
+      <app-icon [imagePath]="'/add-icon.svg'"></app-icon>
+      <span class="add-task">ახალი დავალების დამატება</span>
+    </div>
     <div class="wrapper">
-      <div class="wrapper-add">
+      <div *ngIf="!isStatus1Empty || !isStatus2Empty" class="wrapper-add">
         <app-icon [imagePath]="'/add-icon.svg'"></app-icon>
         <span class="add-task">ახალი დავალების დამატება</span>
       </div>
@@ -112,7 +116,20 @@ export class AddComponent {
     completed: 'დასრულებული სტატუსი',
   };
 
+  isStatus1Empty = true;
+  isStatus2Empty = true;
+
   constructor(private itemsService: ItemsService) {}
+
+  ngOnInit(): void {
+    this.itemsService.getTasksByStatus(1).subscribe((tasks) => {
+      this.isStatus1Empty = tasks.length === 0;
+    });
+
+    this.itemsService.getTasksByStatus(2).subscribe((tasks) => {
+      this.isStatus2Empty = tasks.length === 0;
+    });
+  }
 
   toggleDropdown(event: MouseEvent) {
     event.stopPropagation();
@@ -149,6 +166,7 @@ export class AddComponent {
           (updatedTask: any) => {
             this.taskAdded.emit(updatedTask);
             this.resetForm();
+            this.refreshTaskStatuses();
           },
           (error: any) => {
             console.error('Error updating task:', error);
@@ -159,6 +177,7 @@ export class AddComponent {
           (response: any) => {
             this.taskAdded.emit(response);
             this.resetForm();
+            this.refreshTaskStatuses();
           },
           (error: any) => {
             console.error('Error adding task:', error);
@@ -177,5 +196,15 @@ export class AddComponent {
     this.taskBeingEdited = null;
     this.taskTextError = false;
     this.statusError = false;
+  }
+
+  refreshTaskStatuses() {
+    this.itemsService.getTasksByStatus(1).subscribe((tasks) => {
+      this.isStatus1Empty = tasks.length === 0;
+    });
+
+    this.itemsService.getTasksByStatus(2).subscribe((tasks) => {
+      this.isStatus2Empty = tasks.length === 0;
+    });
   }
 }

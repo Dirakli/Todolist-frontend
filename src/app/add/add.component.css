@@ -1,6 +1,6 @@
 .wrapper {
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
   align-items: end;
   margin-top: 50px;
 }
@@ -59,7 +59,7 @@ label {
 .input-wrapper {
   display: flex;
   width: 100%;
-  max-width: 350px;
+  max-width: 500px;
   flex-direction: column;
 }
 
@@ -82,7 +82,7 @@ label {
 
 .dropdown {
   position: relative;
-  max-width: 320px;
+  max-width: 350px;
   height: 40px;
   width: 100%;
   background-color: #ffffff;
@@ -90,13 +90,16 @@ label {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 35px;
+  padding-left: 30px;
+  margin-left: 60px;
+  padding-right: 30px;
   border-radius: 20px;
   cursor: pointer;
 }
 
 .icon {
   margin-top: 8px;
+  margin-left: 22px;
 }
 
 .btn-icon {
@@ -113,6 +116,7 @@ label {
   justify-content: center;
   align-items: center;
   border: none;
+  margin-left: 60px;
 }
 
 .btn:hover {
@@ -136,6 +140,7 @@ label {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   z-index: 1000;
   width: 100%;
+  height: 100px;
   margin-top: 10px;
   padding: 20px 30px;
   max-width: 350px;
@@ -151,10 +156,9 @@ label {
   font-size: 18px;
   line-height: 21.6px;
   display: flex;
-  align-items: center;
   justify-content: space-between;
   height: 40px;
-  margin-left: 10px;
+  /* margin-left: 30px; */
 }
 
 .dropdown-item-orange {
@@ -163,7 +167,7 @@ label {
 
 .dropdown-item-sky {
   color: #8ff4db;
-  margin-top: 10px;
+  /* margin-top: 10px; */
 }
 
 .dropdown-item:hover {

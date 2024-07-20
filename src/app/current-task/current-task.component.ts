@@ -54,6 +54,14 @@ export class CurrentTaskComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.loadTasks();
+
+    this.editStateService.editIndex$.subscribe((index: number | undefined) => {
+      this.editIndex = index;
+    });
+  }
+
+  loadTasks(): void {
     const status = 1;
     this.itemsService.getTasksByStatus(status).subscribe(
       (response) => {
@@ -66,10 +74,6 @@ export class CurrentTaskComponent implements OnInit {
         console.error('Error fetching tasks:', error);
       }
     );
-
-    this.editStateService.editIndex$.subscribe((index: number | undefined) => {
-      this.editIndex = index;
-    });
   }
 
   onEditTask(task: Task): void {
@@ -77,15 +81,14 @@ export class CurrentTaskComponent implements OnInit {
     this.editTask.emit(task);
   }
 
-  deleteTask(task: Task) {
+  deleteTask(task: Task): void {
     this.itemsService.deleteTask(task.id).subscribe(
       () => {
-        this.tasks = this.tasks.filter((t) => t.id !== task.id);
+        this.loadTasks();
       },
       (error) => {
         console.error('Failed to delete task:', error);
       }
     );
-    window.location.reload();
   }
 }

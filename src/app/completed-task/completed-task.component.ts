@@ -84,6 +84,5 @@ export class CompletedTaskComponent implements OnInit {
         console.error('Failed to delete task:', error);
       }
     );
-    window.location.reload();
   }
 }

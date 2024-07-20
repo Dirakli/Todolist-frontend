@@ -3,6 +3,8 @@
   align-items: center;
   justify-content: space-between;
   padding: 33px 60px;
+  width: 100%;
+  max-width: 63.4%;
 }
 
 .wrapper {

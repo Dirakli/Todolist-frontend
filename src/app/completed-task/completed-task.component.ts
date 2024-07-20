@@ -14,7 +14,6 @@ import { EditStateService } from '../services/edit.service';
         <app-icon [imagePath]="'/compl-icon.svg'"></app-icon>
         <span class="text">დასრულებული დავალებები</span>
       </div>
-      <span class="status">სტატუსი</span>
     </div>
     <div *ngIf="loading">loading...</div>
     <div *ngFor="let task of tasks" class="completed-wrapper">

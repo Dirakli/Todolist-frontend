@@ -1,8 +1,17 @@
 .wrapper {
   display: flex;
-  justify-content: center;
   align-items: end;
   margin-top: 50px;
+  padding-left: 60px;
+  padding-right: 60px;
+}
+
+.space-between {
+  justify-content: space-between;
+}
+
+.center {
+  justify-content: center;
 }
 
 .add-task {
@@ -158,7 +167,6 @@ label {
   display: flex;
   justify-content: space-between;
   height: 40px;
-  /* margin-left: 30px; */
 }
 
 .dropdown-item-orange {
@@ -167,7 +175,6 @@ label {
 
 .dropdown-item-sky {
   color: #8ff4db;
-  /* margin-top: 10px; */
 }
 
 .dropdown-item:hover {

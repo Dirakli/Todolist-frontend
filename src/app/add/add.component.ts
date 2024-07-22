@@ -21,7 +21,13 @@ import { NoticeComponent } from '../notice/notice.component';
       <app-icon [imagePath]="'/add-icon.svg'"></app-icon>
       <span class="add-task">ახალი დავალების დამატება</span>
     </div>
-    <div class="wrapper">
+    <div
+      [ngClass]="{
+        wrapper: true,
+        'space-between': !isStatus1Empty || !isStatus2Empty,
+        center: isStatus1Empty && isStatus2Empty
+      }"
+    >
       <div *ngIf="!isStatus1Empty || !isStatus2Empty" class="wrapper-add">
         <app-icon [imagePath]="'/add-icon.svg'"></app-icon>
         <span class="add-task">ახალი დავალების დამატება</span>

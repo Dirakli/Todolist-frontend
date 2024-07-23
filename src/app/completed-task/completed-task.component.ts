@@ -70,8 +70,14 @@ export class CompletedTaskComponent implements OnInit {
   }
 
   onEditTask(task: Task): void {
-    this.editStateService.setEditIndex(task.id);
-    this.editTask.emit(task);
+    if (this.editIndex === task.id) {
+      // If the current task is already being edited, reset the edit index
+      this.editStateService.setEditIndex(undefined);
+    } else {
+      // Set the edit index to the current task's id
+      this.editStateService.setEditIndex(task.id);
+      this.editTask.emit(task);
+    }
   }
 
   deleteTask(task: Task): void {

@@ -28,8 +28,15 @@ import { NoticeComponent } from '../notice/notice.component';
         center: isStatus1Empty && isStatus2Empty
       }"
     >
-      <div *ngIf="!isStatus1Empty || !isStatus2Empty" class="wrapper-add">
-        <app-icon [imagePath]="'/add-icon.svg'"></app-icon>
+      <div
+        *ngIf="!isStatus1Empty || !isStatus2Empty"
+        class="wrapper-add inline-wrapper"
+      >
+        <app-icon
+          [imagePath]="
+            taskBeingEdited ? '/icon-edit-inline.svg' : '/add-icon.svg'
+          "
+        ></app-icon>
         <span class="add-task">ახალი დავალების დამატება</span>
       </div>
       <div class="input-wrapper">

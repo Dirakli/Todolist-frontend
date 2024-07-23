@@ -89,6 +89,10 @@ label {
   outline: none;
 }
 
+.inline-wrapper {
+  margin-right: 127px;
+}
+
 .dropdown {
   position: relative;
   max-width: 350px;

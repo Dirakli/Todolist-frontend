@@ -4,6 +4,7 @@ import { CommonModule, NgFor } from '@angular/common';
 import { Task } from '../types/task.model';
 import { ItemsService } from '../services/task.service';
 import { EditStateService } from '../services/edit.service';
+
 @Component({
   selector: 'app-completed-task',
   standalone: true,
@@ -51,11 +52,10 @@ export class CompletedTaskComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    const status = 2;
-    this.itemsService.getTasksByStatus(status).subscribe(
-      (response) => {
+    this.itemsService.completedTasks$.subscribe(
+      (tasks) => {
+        this.tasks = tasks;
         this.loading = false;
-        this.tasks = response;
       },
       (error) => {
         this.loading = false;
@@ -74,11 +74,9 @@ export class CompletedTaskComponent implements OnInit {
     this.editTask.emit(task);
   }
 
-  deleteTask(task: Task) {
+  deleteTask(task: Task): void {
     this.itemsService.deleteTask(task.id).subscribe(
-      () => {
-        this.tasks = this.tasks.filter((t) => t.id !== task.id);
-      },
+      () => {},
       (error) => {
         console.error('Failed to delete task:', error);
       }

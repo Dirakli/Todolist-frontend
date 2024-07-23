@@ -83,7 +83,7 @@ import { NoticeComponent } from '../notice/notice.component';
       <button class="btn" (click)="addTask()">
         <app-icon
           class="btn-icon"
-          [imagePath]="dropdownOpen ? '/edit-icon.svg' : '/plus-icon.svg'"
+          [imagePath]="taskBeingEdited ? '/icon-edit.svg' : '/plus-icon.svg'"
         ></app-icon>
         <span class="btn-text">
           {{ taskBeingEdited ? 'რედაქტირება' : 'დამატება' }}

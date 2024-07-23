@@ -54,19 +54,10 @@ export class CurrentTaskComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.loadTasks();
-
-    this.editStateService.editIndex$.subscribe((index: number | undefined) => {
-      this.editIndex = index;
-    });
-  }
-
-  loadTasks(): void {
-    const status = 1;
-    this.itemsService.getTasksByStatus(status).subscribe(
-      (response) => {
+    this.itemsService.currentTasks$.subscribe(
+      (tasks) => {
+        this.tasks = tasks;
         this.loading = false;
-        this.tasks = response;
       },
       (error) => {
         this.loading = false;
@@ -74,6 +65,10 @@ export class CurrentTaskComponent implements OnInit {
         console.error('Error fetching tasks:', error);
       }
     );
+
+    this.editStateService.editIndex$.subscribe((index: number | undefined) => {
+      this.editIndex = index;
+    });
   }
 
   onEditTask(task: Task): void {
@@ -83,9 +78,7 @@ export class CurrentTaskComponent implements OnInit {
 
   deleteTask(task: Task): void {
     this.itemsService.deleteTask(task.id).subscribe(
-      () => {
-        this.loadTasks();
-      },
+      () => {},
       (error) => {
         console.error('Failed to delete task:', error);
       }
